@@ -2,36 +2,42 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import random
 
-#tf.set_random_seed(777)
-
 from tensorflow.examples.tutorials.mnist import input_data
 
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
-#mnist = input_data.read_data_sets("MNIST_data/", one_hot=False)
+tf.set_random_seed(777)
 
-first = mnist.test.labels[0]
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 # hyper parameters
 num_epochs = 15
 batch_size = 100
-learning_rate = 0.5
+learning_rate = 0.001
 
 num_classes = 10
 
 
-
-# MNIST data image of shape 28 * 28 = 784
+# input place holders
 X = tf.placeholder(tf.float32, [None, 784])
-# 0 - 9 digits recognition = 10 classes
-Y = tf.placeholder(tf.float32, [None, num_classes])
+Y = tf.placeholder(tf.float32, [None, 10])
 
-W = tf.Variable(tf.random_normal([784, num_classes]))
-b = tf.Variable(tf.random_normal([num_classes]))
+with tf.variable_scope('layer1') as scope:
+    W1 = tf.Variable(tf.random_normal([784, 256]))
+    b1 = tf.Variable(tf.random_normal([256]))
+    L1 = tf.nn.relu(tf.matmul(X, W1) + b1)
 
-hypothesis = tf.matmul(X, W) + b
+with tf.variable_scope('layer2') as scope:
+    W2 = tf.Variable(tf.random_normal([256, 256]))
+    b2 = tf.Variable(tf.random_normal([256]))
+    L2 = tf.nn.relu(tf.matmul(L1, W2) + b2)
+
+with tf.variable_scope('layer3') as scope:
+    W3 = tf.Variable(tf.random_normal([256, num_classes]))
+    b3 = tf.Variable(tf.random_normal([num_classes]))
+
+
+hypothesis = tf.matmul(L2, W3) + b3
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=hypothesis, labels=Y))
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
-#optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 # Test model
 is_correct = tf.equal(tf.argmax(hypothesis, 1), tf.argmax(Y, 1))
@@ -72,3 +78,5 @@ with tf.Session() as sess:
         sess.run(tf.argmax(hypothesis, 1), feed_dict={X: mnist.test.images[r : r + 1]}),
     )
 
+
+# Accuracy:  0.9442
