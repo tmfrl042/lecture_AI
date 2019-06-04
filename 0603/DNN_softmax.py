@@ -14,7 +14,7 @@ first = mnist.test.labels[0]
 # hyper parameters
 num_epochs = 15
 batch_size = 100
-learning_rate = 0.5
+learning_rate = 0.1
 
 num_classes = 10
 
