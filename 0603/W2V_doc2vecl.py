@@ -2,7 +2,7 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import nltk
 from nltk.tokenize import word_tokenize
 
-#nltk.download()
+nltk.download('punkt')
 
 data = ["나는 학교에 간다",
         "나는 친구를 만난다",

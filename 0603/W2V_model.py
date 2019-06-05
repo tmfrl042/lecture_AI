@@ -1,4 +1,4 @@
-from konlpy.tag import Komoran
+from konlpy.tag import Komoran #Komoran, Okt는 형태소분석기
 from konlpy.tag import Okt
 
 set
