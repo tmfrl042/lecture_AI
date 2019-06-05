@@ -8,7 +8,9 @@ from keras.utils import np_utils
 import cv2
 
 import timeit
+
 tf.set_random_seed(777)
+
 
 # hyper parameters
 # learning_rate = 0.001
@@ -50,18 +52,22 @@ def next_batch(num, data, labels):
     labels_shuffle = [labels[i] for i in idx]
     return np.asarray(data_shuffle), np.asarray(labels_shuffle)
 
+
 def get_conv2d(inputs, filters):
     weight_decay = 1e-4
     activation = tf.nn.elu
     return tf.layers.conv2d(inputs=inputs, filters=filters, kernel_size=[3, 3], padding="SAME", activation=activation,
-                     kernel_regularizer=tf.contrib.layers.l2_regularizer(weight_decay),
-                     kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False))
+                            kernel_regularizer=tf.contrib.layers.l2_regularizer(weight_decay),
+                            kernel_initializer=tf.contrib.layers.xavier_initializer(uniform=False))
+
 
 def get_max_pool(inputs):
     return tf.layers.max_pooling2d(inputs=inputs, pool_size=[2, 2], padding="SAME", strides=2)
 
+
 def get_batch_normalization(inputs):
     return tf.layers.batch_normalization(inputs, center=True, scale=True, training=True)
+
 
 def get_dropout(inputs, rate):
     return tf.layers.dropout(inputs=inputs, rate=rate, training=is_train)
@@ -69,7 +75,7 @@ def get_dropout(inputs, rate):
 
 start = timeit.default_timer();
 
-im = cv2.imread('./data/dog.jpg')
+im = cv2.imread('./data/dog.jpeg')
 print(im.shape)
 img = im.reshape(1, 32, 32, 3)
 
@@ -82,14 +88,13 @@ plt.show()
 #
 # #show_image(x_test[:16])
 #
-#train_num_examples = len(x_train)
+# train_num_examples = len(x_train)
 num_classes = 10
 is_train = tf.placeholder(tf.bool)
 
 # input place holders
 X = tf.placeholder(tf.float32, shape=[None, 32, 32, 3])
 Y = tf.placeholder(tf.float32, shape=[None, 10])
-
 
 conv1 = get_conv2d(X, 32)
 norm1 = get_batch_normalization(conv1)

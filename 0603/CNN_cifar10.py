@@ -9,6 +9,7 @@ from keras.utils import np_utils
 tf.set_random_seed(777)
 
 # hyper parameters
+num_classes = 10
 learning_rate = 0.001
 training_epochs = 15
 batch_size = 100
