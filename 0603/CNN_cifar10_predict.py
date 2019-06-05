@@ -75,7 +75,7 @@ def get_dropout(inputs, rate):
 
 start = timeit.default_timer();
 
-im = cv2.imread('./data/dog.jpeg')
+im = cv2.imread('./data/cat.jpg')
 print(im.shape)
 img = im.reshape(1, 32, 32, 3)
 
@@ -127,7 +127,7 @@ logits = tf.layers.dense(inputs=flat, units=num_classes)
 saver = tf.train.Saver()
 
 with tf.Session() as sess:
-    saver.restore(sess, 'model/cifar.ckpt')
+    saver.restore(sess, 'model/cifar10.ckpt')
 
     print(
         "Prediction: ",
